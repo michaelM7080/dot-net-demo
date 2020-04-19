@@ -4,8 +4,8 @@ import { Market } from './Models/market';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GeolocationService } from './Services/geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FriendlyMessageComponent } from './Components/friendly-message/friendly-message.component';
-import { AboutComponent } from './Components/about/about.component';
+import { FriendlyMessageComponent } from './Modules/friendly-message/friendly-message.component';
+import { AboutComponent } from './Modules/about/about.component';
 
 @Component({
   selector: 'app-root',

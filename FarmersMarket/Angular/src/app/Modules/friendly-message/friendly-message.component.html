@@ -1,0 +1,9 @@
+<div class="container">
+    <h3 fxLayoutAlign="center center" *ngIf="message">{{message.title}}</h3>
+    <p class="message">{{message.message}}</p>
+    <p *ngIf="message.message2">{{message.message2}}</p>
+    <div id="confirmButtonDiv" fxLayoutAlign="end center">
+      <button mat-raised-button (click)="close()">{{message.button}}</button>
+    </div>
+  </div>
+   
