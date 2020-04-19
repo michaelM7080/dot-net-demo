@@ -35,10 +35,15 @@
                 <button id="locationSearchBtn" mat-raised-button (click)="listMarketsByLocation()">Search By My Location</button>
             </div>
 
-            <div>
-                
+            <div *ngIf="!gettingList; else loadSpinner">
+                <p>Not busy</p>
             </div>
         </div>
-
     </div>
 </div>
+
+<ng-template #loadSpinner>
+    <div fxLayoutAlign="center center">
+        <app-load-spinner></app-load-spinner>
+    </div>
+</ng-template>

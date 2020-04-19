@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
 
   markets: Market[];
   zipFormGroup: FormGroup;
+  gettingList: boolean = false;
+  gettingDetail: boolean = false;
   
   constructor(
     private marketServ: MarketsService,
@@ -43,9 +45,25 @@ export class AppComponent implements OnInit {
     });
   }
 
+  setGettingListValue() {
+    this.gettingList = true;
+    setTimeout(() => {
+      this.gettingList = false;
+    }, 3000);
+  }
+
+  setGettingDetailValue() {
+    this.gettingDetail = true;
+    setTimeout(() => {
+      this.gettingDetail = false;
+    }, 3000);
+  }
+
   listMarketsByZip() {
     if(this.zipFormGroup.valid && this.zipFormGroup.value.zip && this.zipFormGroup.value.zip != "00000") {
+      this.setGettingListValue();
       this.marketServ.listMarketsByZip(this.zipFormGroup.value.zip).subscribe(list => {
+        this.gettingList = false;
         this.markets = list.response;
         console.log("List of Markets", this.markets);
       });
@@ -53,17 +71,20 @@ export class AppComponent implements OnInit {
   }
 
   listMarketsByLocation() {
+    this.setGettingListValue();
     this.zipFormGroup.reset();
     this.geoServ.getPosition().then(location => {
       if(location && location.lon && location.lon) {
         //if location is found, get list of marekts.
         this.marketServ.listMarketsByLocation(location.lat.toString(), location.lon.toString()).subscribe(list => {
+          this.gettingList = false;
           this.markets = list.response;
           console.log("list of markets", this.markets);
         });
       }
       else {
         //throw error
+        this.gettingList = false;
         this.dialog.open(FriendlyMessageComponent, {
           width: "auto", 
           height: "auto", 
@@ -76,14 +97,16 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getMarketsDetail() {
-    this.marketServ.getMarketDetailsById("1010766").subscribe(details => {
+  getMarketsDetail(marketId: string) {
+    this.setGettingDetailValue();
+    this.marketServ.getMarketDetailsById(marketId).subscribe(details => {
+      this.gettingDetail = false;
       console.log("Market Details", details);
     })
   }
 
-  flipFavoriteValue() {
-    this.marketServ.flipFavoriteStatusById("1010766").subscribe(fav => {
+  flipFavoriteValue(marketId: string) {
+    this.marketServ.flipFavoriteStatusById(marketId).subscribe(fav => {
       console.log("favorite status", fav);
     })
   }

@@ -45,12 +45,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { FriendlyMessageComponent } from './Modules/friendly-message/friendly-message.component';
 import { AboutComponent } from './Modules/about/about.component';
+import { LoadSpinnerComponent } from './Modules/load-spinner/load-spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FriendlyMessageComponent,
-    AboutComponent
+    AboutComponent,
+    LoadSpinnerComponent
   ],
   imports: [
     BrowserModule,
