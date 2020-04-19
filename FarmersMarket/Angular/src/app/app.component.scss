@@ -28,7 +28,7 @@
     #innerBodyDiv {
         width: 75vw;
         
-         p{ 
+         .bodyText{ 
              font-weight: bold;
              font-size: 15px;
          }
@@ -51,6 +51,91 @@
                     margin-top: 10px;
                 }
              }
+
+             #resultsPane {
+                 margin-top: 20px;
+
+                 
+
+                 .mat-expansion-panel-header {
+                     padding: 5px 10px;
+                     height: auto;
+                    
+                     &:hover {
+                         background-color: var(--primary-light);
+                         .notFavorite {
+                             visibility: visible;
+                         }
+                     }
+                 }
+
+                 .marketItem {
+                     width: 100%;
+                     padding: 5px 10px;
+                     cursor: pointer;
+                     border-radius: 5px;
+
+                     &:hover {
+                         background-color: var(--primary-light);
+
+                         .notFavorite {
+                             visibility: visible;
+                         }
+                     }
+
+                     .marketIcon {
+                         margin-right: 15px;
+                     }
+
+                     .marketName {
+                         font-weight: bold;
+                         margin-bottom: 0;
+                     }
+
+                     .marketDistance {
+                         font-weight: normal;
+                         color: var(--primary-dark);
+                         margin-bottom: 0;
+                     }
+
+                     .notFavorite {
+                         margin-left: 10px;
+                         margin-right: 10px;
+                         visibility: hidden;
+                         color: grey;
+                         font-size: 30px;
+
+                         &:hover {
+                             color: var(--secondary);
+                         }
+                     }
+
+                     .favorite {
+                         margin-left: 10px;
+                         margin-right: 10px;
+                         color: var(--secondary);
+                         font-size: 30px;
+
+                         &:hover {
+                             color: grey;
+                         }
+                     }
+                 }
+
+                 .marketDetails{
+                     margin-top: 10px;
+
+                     mat-icon{
+                         margin-right: 10px;
+                     }
+
+                     .title {
+                         margin-bottom: 0;
+                         font-weight: bold;
+                         font-size: 16px;
+                     }
+                 }
+             }
          }
     }
 }
@@ -65,6 +150,10 @@
     #body {
         #innerBodyDiv {
             width: 90vw;
+
+            .notFavorite {
+                visibility: visible !important;
+            }
         }
     }
 }

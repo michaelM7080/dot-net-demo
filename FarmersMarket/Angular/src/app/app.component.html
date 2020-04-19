@@ -10,9 +10,8 @@
 
 <div id="body" fxLayout="column" fxLayoutAlign="start center">
     <div id="innerBodyDiv">
-        <p>Farmer's Market Finder is a great tool that can find farmer's markets by either zip code or using your location.</p>
-        <!-- <p>This application is created with a ASP.NET Core API, an Azure SQL database, and an Angular 9 front end with Material Design elements. The front end site's styles use media queries and Angular's Flex-Layout NPM to offer a responsive experience for it's users.</p> -->
-        <p>You can also favorite markets and view more details about them by clicking on them.</p>
+        <p class="bodyText">Farmer's Market Finder is a great tool that can find farmer's markets by either zip code or using your location.</p>
+        <p class="bodyText">You can also favorite markets and view more details about them by clicking on them.</p>
         
         <div id="marketList" fxLayout="column">
             <div id="controls" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-md="space-between center" fxLayoutAlign.lt-lg="space-between center">
@@ -20,7 +19,7 @@
                     <form [formGroup]="zipFormGroup">
                         <mat-form-field>
                             <mat-label>Zip Code</mat-label>
-                            <input id="zip" matInput formControlName="zip" name="zip"/>
+                            <input id="zip" matInput formControlName="zip" name="zip" (keyup)="checkForEnter($event)"/>
                             <mat-error *ngIf="zipFormGroup.controls['zip'].hasError('pattern') && (zipFormGroup.controls['zip'].dirty || zipFormGroup.controls['zip'].touched)">
                                 Only use digits 0-9.
                             </mat-error>
@@ -35,12 +34,73 @@
                 <button id="locationSearchBtn" mat-raised-button (click)="listMarketsByLocation()">Search By My Location</button>
             </div>
 
-            <div *ngIf="!gettingList; else loadSpinner">
-                <p>Not busy</p>
+            <div id="resultsPane" *ngIf="!gettingList; else loadSpinner">
+
+                <mat-accordion *ngIf="markets.length > 0; else noMarkets">
+
+                    <mat-expansion-panel [expanded]=false hideToggle *ngFor="let market of markets">
+                        <mat-expansion-panel-header (click)="getMarketsDetail(market.marketNumber)">
+                            <mat-panel-title>
+                                <div class="marketItem" fxLayout="row" fxLayoutAlign="space-between start">
+                                    <div fxLayout="row">
+                                        <mat-icon class="marketIcon">storefront</mat-icon>
+                                        <div fxLayout="column">
+                                            <p class="marketName">{{market.name}}</p>
+                                            <p class="marketDistance">{{market.distance}} miles away</p>
+                                        </div>
+                                    </div>
+                                    <mat-icon class="favorite" *ngIf="market.isFavorite; else notFavorite" (click)="flipFavoriteValue($event, market.marketNumber)">star</mat-icon>
+                                    <ng-template #notFavorite>
+                                        <mat-icon class="notFavorite" (click)="flipFavoriteValue($event, market.marketNumber)">star_border</mat-icon>
+                                    </ng-template>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-divider class="detailDivider"></mat-divider>
+                        <div class="marketDetails" *ngIf="marketDetail">
+                            <div *ngIf="!gettingDetails; else loadSpinner" fxLayout="row" fxLayoutAlign="space-between start">
+                                <div fxFlex="45" fxLayout="column">
+                                    <div fxLayout="row">
+                                        <mat-icon>location_on</mat-icon>
+                                        <div fxLayout="column">
+                                            <p class="title">Address:</p>
+                                            <p><a href="{{marketDetail.googleAddressUrl}}" target="_blank">{{marketDetail.address}}</a></p>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row">
+                                        <mat-icon>schedule</mat-icon>
+                                        <div fxLayout="column">
+                                            <p class="title">Schedule:</p>
+                                            <p *ngFor="let item of marketDetail.schedule">{{item}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div fxFlex="45" fxLayout="column">
+                                    <div fxLayout="row">
+                                        <mat-icon>category</mat-icon>
+                                        <div fxLayout="column">
+                                            <p class="title">Products:</p>
+                                            <p *ngFor="let item of marketDetail.products">{{item}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #noMarkets>
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <p class="bodyText">No Markets Listed</p>
+        <p class="bodyText">Try Searching by Zip or Locaiton</p>
+    </div>
+</ng-template>
 
 <ng-template #loadSpinner>
     <div fxLayoutAlign="center center">

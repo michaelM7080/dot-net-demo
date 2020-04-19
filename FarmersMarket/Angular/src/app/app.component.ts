@@ -6,6 +6,7 @@ import { GeolocationService } from './Services/geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FriendlyMessageComponent } from './Modules/friendly-message/friendly-message.component';
 import { AboutComponent } from './Modules/about/about.component';
+import { MarketDetailsResponse } from './Models/marketDetailsResponse';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,11 @@ import { AboutComponent } from './Modules/about/about.component';
 })
 export class AppComponent implements OnInit {
 
-  markets: Market[];
+  markets: Market[] = [];
+  marketDetail: MarketDetailsResponse = new MarketDetailsResponse();
   zipFormGroup: FormGroup;
   gettingList: boolean = false;
-  gettingDetail: boolean = false;
+  gettingDetails: boolean = false;
   
   constructor(
     private marketServ: MarketsService,
@@ -53,19 +55,24 @@ export class AppComponent implements OnInit {
   }
 
   setGettingDetailValue() {
-    this.gettingDetail = true;
+    this.gettingDetails = true;
     setTimeout(() => {
-      this.gettingDetail = false;
-    }, 3000);
+      this.gettingDetails = false;
+    }, 10000);
+  }
+
+  checkForEnter(event) {
+    if(event.key == "Enter") {
+      this.listMarketsByZip();
+    }
   }
 
   listMarketsByZip() {
     if(this.zipFormGroup.valid && this.zipFormGroup.value.zip && this.zipFormGroup.value.zip != "00000") {
       this.setGettingListValue();
       this.marketServ.listMarketsByZip(this.zipFormGroup.value.zip).subscribe(list => {
-        this.gettingList = false;
         this.markets = list.response;
-        console.log("List of Markets", this.markets);
+        this.gettingList = false;
       });
     }
   }
@@ -77,9 +84,8 @@ export class AppComponent implements OnInit {
       if(location && location.lon && location.lon) {
         //if location is found, get list of marekts.
         this.marketServ.listMarketsByLocation(location.lat.toString(), location.lon.toString()).subscribe(list => {
-          this.gettingList = false;
           this.markets = list.response;
-          console.log("list of markets", this.markets);
+          this.gettingList = false;
         });
       }
       else {
@@ -99,15 +105,19 @@ export class AppComponent implements OnInit {
 
   getMarketsDetail(marketId: string) {
     this.setGettingDetailValue();
-    this.marketServ.getMarketDetailsById(marketId).subscribe(details => {
-      this.gettingDetail = false;
-      console.log("Market Details", details);
-    })
+      this.marketServ.getMarketDetailsById(marketId).subscribe(details => {
+        this.marketDetail = details;
+        this.gettingDetails = false;
+        console.log("Market Details", details);
+      });
   }
 
-  flipFavoriteValue(marketId: string) {
+  flipFavoriteValue(event:Event, marketId: string) {
+    event.stopPropagation()
+    let market = this.markets.find(item => item.marketNumber == marketId);
+    market.isFavorite = !market.isFavorite;
     this.marketServ.flipFavoriteStatusById(marketId).subscribe(fav => {
       console.log("favorite status", fav);
-    })
+    });
   }
 }
