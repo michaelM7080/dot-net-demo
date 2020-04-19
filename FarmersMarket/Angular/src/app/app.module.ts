@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Import Material
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -42,16 +43,23 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
+import { FriendlyMessageComponent } from './Components/friendly-message/friendly-message.component';
+import { AboutComponent } from './Components/about/about.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FriendlyMessageComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule,
 
     // Material
     MatAutocompleteModule,
@@ -91,6 +99,10 @@ import { MatTreeModule } from '@angular/material/tree';
     MatTreeModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent], 
+  entryComponents: [
+    FriendlyMessageComponent,
+    AboutComponent
+  ]
 })
 export class AppModule { }

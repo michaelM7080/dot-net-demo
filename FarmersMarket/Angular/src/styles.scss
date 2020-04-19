@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+//Global Color Library
+:root {
+    --primary: #1ebff1;
+    --primary-light: #6ef2ff;
+    --primary-dark: #008fbe;
+    --secondary: #f2af45;
+    --secondary-light: #ffe175;
+    --secondary-dark: #bb800e;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}

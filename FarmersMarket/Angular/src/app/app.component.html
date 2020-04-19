@@ -1,5 +1,44 @@
-<button mat-raised-button (click)="listMarketsByZip()">Zip!</button>
-<button mat-raised-button (click)="listMarketsByLocation()">Location!</button>
-<button mat-raised-button (click)="getMarketsDetail()">Details!</button>
-<button mat-raised-button (click)="flipFavoriteValue()">Favorite!</button>
-<p>test!</p>
+<div id="header" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <img id="FMFLogo" src="./../assets/Images/FMFLogo-250.png"/>
+        <p id="FMFName">Farmer's Market Finder</p>
+    </div>
+    <mat-icon (click)="openInfo()">info</mat-icon>
+</div>
+
+<mat-divider></mat-divider>
+
+<div id="body" fxLayout="column" fxLayoutAlign="start center">
+    <div id="innerBodyDiv">
+        <p>Farmer's Market Finder is a great tool that can find farmer's markets by either zip code or using your location.</p>
+        <!-- <p>This application is created with a ASP.NET Core API, an Azure SQL database, and an Angular 9 front end with Material Design elements. The front end site's styles use media queries and Angular's Flex-Layout NPM to offer a responsive experience for it's users.</p> -->
+        <p>You can also favorite markets and view more details about them by clicking on them.</p>
+        
+        <div id="marketList" fxLayout="column">
+            <div id="controls" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-md="space-between center" fxLayoutAlign.lt-lg="space-between center">
+                <div id="zipCodeForm" fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="space-between center">
+                    <form [formGroup]="zipFormGroup">
+                        <mat-form-field>
+                            <mat-label>Zip Code</mat-label>
+                            <input id="zip" matInput formControlName="zip" name="zip"/>
+                            <mat-error *ngIf="zipFormGroup.controls['zip'].hasError('pattern') && (zipFormGroup.controls['zip'].dirty || zipFormGroup.controls['zip'].touched)">
+                                Only use digits 0-9.
+                            </mat-error>
+                            <mat-error *ngIf="!zipFormGroup.controls['zip'].hasError('pattern') && (zipFormGroup.controls['zip'].hasError('minlength')) || zipFormGroup.controls['zip'].hasError('maxlength') && (zipFormGroup.controls['zip'].dirty || zipFormGroup.controls['zip'].touched)">
+                                Only use 5 digit zip code.
+                            </mat-error>
+                        </mat-form-field>
+                    </form>
+                    <button id="zipSearchBtn" mat-raised-button (click)="listMarketsByZip()">Search By Zip</button>
+                </div>
+                <p> - Or - </p>
+                <button id="locationSearchBtn" mat-raised-button (click)="listMarketsByLocation()">Search By My Location</button>
+            </div>
+
+            <div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
