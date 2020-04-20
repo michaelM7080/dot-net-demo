@@ -2,7 +2,8 @@
   "name": "angular",
   "version": "0.0.0",
   "scripts": {
-    "serve": "ng serve --port 4200 --open"
+    "serve": "ng serve --port 4200 --open", 
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
